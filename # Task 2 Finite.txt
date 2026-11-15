@@ -1,0 +1,60 @@
+# Task 2: Finite Automata for Input Validation
+
+# 1. Mobile Number Validation
+def check_mobile(number):
+    if number.startswith("+91"):
+        number = number[3:]
+    elif number.startswith("91") and len(number) == 12:
+        number = number[2:]
+    elif number.startswith("0") and len(number) == 11:
+        number = number[1:]
+
+    return (len(number) == 10 and
+            number.isdigit() and
+            number[0] in "6789")
+
+
+# 2. IPv4 Address Validation
+def check_ip(ip):
+    parts = ip.split(".")
+
+    if len(parts) != 4:
+        return False
+
+    for part in parts:
+        if not part.isdigit():
+            return False
+        if len(part) > 1 and part[0] == "0":
+            return False
+        if int(part) > 255:
+            return False
+
+    return True
+
+
+# 3. Password Validation
+def check_password(password):
+    special = "!@#$%&*?_-"
+
+    return (
+        8 <= len(password) <= 12 and
+        any(c.isupper() for c in password) and
+        any(c.islower() for c in password) and
+        any(c.isdigit() for c in password) and
+        any(c in special for c in password) and
+        not any(c.isspace() for c in password)
+    )
+
+
+# Main Program
+print("FINITE AUTOMATA INPUT VALIDATOR")
+
+mobile = input("Enter Mobile Number: ")
+ip = input("Enter IPv4 Address: ")
+password = input("Enter Password: ")
+
+print("\n--- VALIDATION RESULTS ---")
+
+print("Mobile:", "ACCEPTED" if check_mobile(mobile) else "REJECTED")
+print("IPv4:", "ACCEPTED" if check_ip(ip) else "REJECTED")
+print("Password:", "ACCEPTED" if check_password(password) else "REJECTED")
